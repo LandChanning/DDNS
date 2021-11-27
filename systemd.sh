@@ -5,8 +5,9 @@ After=network.target
  
 [Service]
 Type=simple
+User=lcn
 WorkingDirectory=/usr/share/DDNS
-ExecStart=/usr/bin/env python /usr/share/DDNS/run.py -c /etc/DDNS/config.json
+ExecStart=python3 /usr/share/DDNS/run.py -c /etc/DDNS/config.json
  
 [Install]
 WantedBy=multi-user.target'
@@ -31,6 +32,7 @@ if [[ "install" == $1 ]]; then
             cp config.json /etc/DDNS/config.json
         fi
     fi
+    systemctl enable ddns # 不设置开机自启，timer 不生效
     systemctl enable ddns.timer
     systemctl start ddns.timer
     echo "installed"
